@@ -25,6 +25,7 @@ const Home = () => {
     last_name: "",
     email: "",
   });
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     dispatch(fetchUsers(page));
@@ -62,46 +63,57 @@ const Home = () => {
     }
   };
 
+  const filteredUsers = users.filter(
+    (user) =>
+      user.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.last_name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="max-w-6xl mx-auto p-6">
-      {/* Header */}
       <div className="flex justify-between items-center">
         <h2 className="text-3xl font-bold">User List</h2>
-        {token && (
-          <button
-            onClick={handleLogout}
-            className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300"
-          >
-            Logout
-          </button>
-        )}
+        <div className="flex items-center gap-4">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          {token && (
+            <button
+              onClick={handleLogout}
+              className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300"
+            >
+              Logout
+            </button>
+          )}
+        </div>
       </div>
 
-      {/* Loading & Error */}
       {loading && <SkeletonLoader />}
       {error && <p className="text-center text-red-500">{error}</p>}
 
-      {/* User List */}
       {!loading && !error && (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
-            {users.map((user) => (
+            {filteredUsers.map((user) => (
               <div
                 key={user.id}
                 className="border p-6 rounded-lg shadow-md bg-white flex flex-col items-center w-full"
               >
-                {/* User Avatar */}
                 <img
                   src={user.avatar}
                   alt={user.first_name}
                   className="w-28 h-28 rounded-full object-cover border-2 border-gray-300"
                 />
 
-                {/* User Info */}
                 <h3 className="text-xl font-semibold mt-4">
                   {user.first_name} {user.last_name}
                 </h3>
                 <p className="text-gray-500">{user.email}</p>
+
                 <div className="mt-4 flex gap-2">
                   <button
                     onClick={() => handleEditClick(user)}
@@ -120,7 +132,6 @@ const Home = () => {
             ))}
           </div>
 
-          {/* Pagination */}
           <div className="mt-6 flex justify-center">
             <Pagination
               page={page}
@@ -131,7 +142,6 @@ const Home = () => {
         </>
       )}
 
-      {/* Edit Modal */}
       {editingUser && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
@@ -181,3 +191,4 @@ const Home = () => {
 };
 
 export default Home;
+
