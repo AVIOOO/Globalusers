@@ -102,22 +102,6 @@ const Home = () => {
                   {user.first_name} {user.last_name}
                 </h3>
                 <p className="text-gray-500">{user.email}</p>
-
-                {/* Buttons */}
-                {/* <div className="mt-4 flex gap-3">
-                  <button
-                    onClick={() => handleEditClick(user)}
-                    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(user.id)}
-                    className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300"
-                  >
-                    Delete
-                  </button>
-                </div> */}
                 <div className="mt-4 flex gap-2">
                   <button
                     onClick={() => handleEditClick(user)}
